@@ -18,20 +18,19 @@ class TestCreateAdvert:
     def test_create_advert_by_unauthorized_user(self, driver, browser_wait):
         driver.find_element(*MainPageLocators.CREATE_LISTING_BUTTON).click()
 
-        auth_required_title = browser_wait.until(
-            EC.visibility_of_element_located(LoginPageLocators.AUTH_REQUIRED_TITLE)
+        assert browser_wait.until(
+            EC.visibility_of_element_located(LoginPageLocators.AUTH_REQUIRED_TITLE),
+            message="Окно авторизации не отобразилось",
         )
 
-        assert auth_required_title.text == AUTH_REQUIRED_TEXT
+        print(f"Окно авторизации отобразилось")
 
     def test_create_advert_by_authorized_user(self, browser_wait, add_user):
         driver = add_user
         advert_name = generate_random_advert_name()
         driver.find_element(*MainPageLocators.CREATE_LISTING_BUTTON).click()
         browser_wait.until(
-            EC.visibility_of_element_located(
-                NewListingPageLocators.NEW_LISTING_TITLE
-            )
+            EC.visibility_of_element_located(NewListingPageLocators.NEW_LISTING_TITLE)
         )
 
         driver.find_element(*NewListingPageLocators.LISTING_NAME_INPUT).send_keys(
@@ -40,9 +39,7 @@ class TestCreateAdvert:
         driver.find_element(*NewListingPageLocators.DESCRIPTION_INPUT).send_keys(
             ADVERT_DESCRIPTION
         )
-        driver.find_element(*NewListingPageLocators.PRICE_INPUT).send_keys(
-            ADVERT_PRICE
-        )
+        driver.find_element(*NewListingPageLocators.PRICE_INPUT).send_keys(ADVERT_PRICE)
         driver.find_element(*NewListingPageLocators.CATEGORY_DROPDOWN).click()
         browser_wait.until(
             EC.element_to_be_clickable(NewListingPageLocators.TECHNOLOGY_CATEGORY)
@@ -65,7 +62,9 @@ class TestCreateAdvert:
         )
         publish_button.click()
 
-        browser_wait.until(EC.invisibility_of_element_located(NewListingPageLocators.PUBLISH_BUTTON))
+        browser_wait.until(
+            EC.invisibility_of_element_located(NewListingPageLocators.PUBLISH_BUTTON)
+        )
 
         driver.execute_script("window.scrollTo(0, 0);")
 
@@ -75,17 +74,18 @@ class TestCreateAdvert:
         # driver.execute_script("arguments[0].scrollIntoView();", user_avatar)
         user_avatar.click()
 
-        browser_wait.until(EC.visibility_of_element_located(ProfilePageLocators.PROFILE_TITLE))
+        browser_wait.until(
+            EC.visibility_of_element_located(ProfilePageLocators.PROFILE_TITLE)
+        )
 
         user_adverts_title = browser_wait.until(
             EC.visibility_of_element_located(ProfilePageLocators.USER_ADVERTS_TITLE)
         )
-        
+
         driver.execute_script("arguments[0].scrollIntoView();", user_adverts_title)
-        advert_title = browser_wait.until(
+
+        assert browser_wait.until(
             EC.visibility_of_element_located(
                 ProfilePageLocators.advert_title(advert_name)
             )
         )
-        
-        assert advert_title.text == advert_name

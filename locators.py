@@ -14,7 +14,7 @@ class LoginPageLocators:
     LOGIN_TITLE = (By.XPATH, "//h1[text()='Войти']")
     AUTH_REQUIRED_TITLE = (
         By.XPATH,
-        "//h1[text()='Чтобы разместить объявление, авторизуйтесь']",
+        "//h1[text()='Чтобы разместить объявление, авторизуйтесь']",  # test
     )
 
 

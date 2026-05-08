@@ -52,4 +52,6 @@ def register_user(driver, browser_wait, email):
         DEFAULT_PASSWORD
     )
     driver.find_element(*RegistrationPageLocators.CREATE_ACCOUNT_BUTTON).click()
-    browser_wait.until(EC.visibility_of_element_located(ProfilePageLocators.USER_AVATAR))
+    assert browser_wait.until(
+        EC.visibility_of_element_located(ProfilePageLocators.USER_AVATAR)
+    )

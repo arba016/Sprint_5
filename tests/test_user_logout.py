@@ -10,12 +10,9 @@ class TestUserLogout:
             EC.element_to_be_clickable(ProfilePageLocators.LOGOUT_BUTTON)
         ).click()
 
-        user_name_is_hidden = browser_wait.until(
+        assert browser_wait.until(
             EC.invisibility_of_element_located(ProfilePageLocators.USER_NAME)
         )
-        user_avatar_is_hidden = browser_wait.until(
+        assert browser_wait.until(
             EC.invisibility_of_element_located(ProfilePageLocators.USER_AVATAR)
         )
-
-        assert user_name_is_hidden is True
-        assert user_avatar_is_hidden is True
